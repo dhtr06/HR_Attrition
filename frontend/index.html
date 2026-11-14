@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TalentPulse AI – Hệ thống Phân tích & Dự đoán Nghỉ việc Nhân sự</title>
+  
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Chart.js via CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+  <!-- Application Stylesheet -->
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+  <!-- Toast Notification Container -->
+  <div id="toastContainer" class="toast-container"></div>
+
+  <!-- App Container -->
+  <div class="app-layout">
+    
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-logo">
+          <svg class="brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+        </div>
+        <div class="brand-info">
+          <h2>TalentPulse <span>AI</span></h2>
+          <small>PEOPLE ANALYTICS</small>
+        </div>
+      </div>
+
+      <div class="sidebar-status-pill">
+        <span class="status-dot"></span>
+        <span id="sidebarStatusText">AI Model: Ready</span>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a href="#dashboard" class="nav-item active" data-tab="dashboard">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="7" height="9" rx="1.5"/>
+            <rect x="14" y="3" width="7" height="5" rx="1.5"/>
+            <rect x="14" y="12" width="7" height="9" rx="1.5"/>
+            <rect x="3" y="16" width="7" height="5" rx="1.5"/>
+          </svg>
+          <span>Tổng quan</span>
+        </a>
+
+        <a href="#employees" class="nav-item" data-tab="employees">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+          </svg>
+          <span>Nhân viên</span>
+          <span class="nav-badge" id="badgeEmpCount">0</span>
+        </a>
+
+        <a href="#prediction" class="nav-item" data-tab="prediction">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
+          </svg>
+          <span>Dự đoán AI</span>
+          <span class="nav-badge ai">AI</span>
+        </a>
+
+        <a href="#history" class="nav-item" data-tab="history">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <span>Lịch sử dự đoán</span>
+        </a>
+
+        <a href="#system" class="nav-item" data-tab="system">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
+          </svg>
+          <span>Hệ thống & AI</span>
+        </a>
+      </nav>
+
+      <!-- Sidebar Footer -->
+      <div class="sidebar-user">
+        <div class="user-avatar">HR</div>
+        <div class="user-info">
+          <div class="user-name">Quản trị viên Nhân sự</div>
+          <div class="user-role">HR Director / Analyst</div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      
+      <!-- Top Header Bar -->
+      <header class="top-header">
+        <div class="header-left">
+          <button class="mobile-menu-toggle" id="mobileMenuToggle" title="Toggle Menu">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+          <div>
+            <div class="header-breadcrumb" id="headerBreadcrumb">Quản trị Nhân sự / Tổng quan</div>
+            <h1 class="header-title" id="headerTitle">Bảng điều khiển Tổng quan</h1>
+          </div>
+        </div>
+
+        <div class="header-actions">
+          <button class="btn btn-secondary" onclick="loadAll()" title="Làm mới dữ liệu">
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+            </svg>
+            <span>Làm mới</span>
+          </button>
+
+          <button class="btn btn-primary" onclick="openAddModal()">
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+            </svg>
+            <span>+ Thêm nhân viên</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- TAB 1: DASHBOARD -->
+      <section id="dashboard" class="tab-pane active">
+        
+        <!-- KPI Metric Cards Grid -->
+        <div class="stats-grid">
+          
+          <div class="stat-card">
+            <div class="stat-header">
+              <span class="stat-label">Tổng số nhân sự</span>
+              <div class="stat-icon-wrapper blue">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
+                </svg>
+              </div>
+            </div>
+            <div class="stat-value" id="statTotalEmployees">—</div>
+            <div class="stat-footer">
+              <span class="stat-tag success">+4.2% so với tháng trước</span>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-header">
+              <span class="stat-label">Lượt dự đoán AI</span>
+              <div class="stat-icon-wrapper purple">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+              </div>
+            </div>
+            <div class="stat-value" id="statTotalPredictions">—</div>
+            <div class="stat-footer">
+              <span class="stat-hint">Dự báo mô hình Machine Learning</span>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-header">
+              <span class="stat-label">Nhân sự rủi ro cao</span>
+              <div class="stat-icon-wrapper red">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+              </div>
+            </div>
+            <div class="stat-value danger-text" id="statHighRisk">—</div>
+            <div class="stat-footer">
+              <span class="stat-tag danger">Cần can thiệp giữ chân ngay</span>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-header">
+              <span class="stat-label">Điểm hài lòng trung bình</span>
+              <div class="stat-icon-wrapper amber">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                </svg>
+              </div>
+            </div>
+            <div class="stat-value" id="statAvgSatisfaction">— <small>/ 4.0</small></div>
+            <div class="stat-footer">
+              <span class="stat-hint">Khảo sát gắn kết định kỳ</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Charts Row -->
+        <div class="charts-row">
+          
+          <div class="chart-card">
+            <div class="chart-header">
+              <div>
+                <h3>Phân bổ nhân sự & Tỷ lệ làm thêm giờ theo Phòng ban</h3>
+                <p>Số lượng nhân sự và tỷ lệ OT tại các bộ phận trọng yếu</p>
+              </div>
+            </div>
+            <div class="chart-container">
+              <canvas id="deptChart"></canvas>
+            </div>
+          </div>
+
+          <div class="chart-card">
+            <div class="chart-header">
+              <div>
+                <h3>Cơ cấu Nhóm Nguy cơ Nghỉ việc</h3>
+                <p>Dựa trên toàn bộ kết quả phân tích AI</p>
+              </div>
+            </div>
+            <div class="chart-container donut-wrapper">
+              <canvas id="riskDonutChart"></canvas>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Attention List / Early Warning -->
+        <div class="panel">
+          <div class="panel-header">
+            <div>
+              <h3>Nhân sự cần chú ý đặc biệt (Cảnh báo sớm)</h3>
+              <p>Nhân viên có dấu hiệu quá tải (OT liên tục) hoặc chỉ số hài lòng thấp</p>
+            </div>
+            <button class="btn btn-sm btn-secondary" onclick="switchTab('employees')">Xem tất cả nhân viên →</button>
+          </div>
+
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Mã NV</th>
+                  <th>Họ và tên</th>
+                  <th>Phòng ban</th>
+                  <th>Chức danh</th>
+                  <th>Lương tháng</th>
+                  <th>Làm thêm giờ</th>
+                  <th>Hài lòng</th>
+                  <th>Lý do cảnh báo</th>
+                  <th>Thao tác</th>
+                </tr>
+              </thead>
+              <tbody id="attentionRows">
+                <tr><td colspan="9" class="text-center py-4">Đang tải dữ liệu cảnh báo...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- TAB 2: EMPLOYEE MANAGEMENT -->
+      <section id="employees" class="tab-pane">
+        
+        <div class="panel">
+          <div class="panel-header">
+            <div>
+              <h2>Quản lý danh sách Nhân sự</h2>
+              <p>Tra cứu, theo dõi hồ sơ nhân sự, cập nhật thông tin và kích hoạt phân tích AI</p>
+            </div>
+            <div class="panel-actions">
+              <button class="btn btn-secondary" onclick="exportEmployeesCSV()">
+                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+                <span>Xuất file CSV</span>
+              </button>
+              <button class="btn btn-primary" onclick="openAddModal()">
+                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                </svg>
+                <span>+ Thêm nhân viên</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Search & Filter Controls -->
+          <div class="filter-bar">
+            <div class="search-input-wrapper">
+              <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+              <input type="text" id="employeeSearch" placeholder="Tìm theo mã NV, họ tên, phòng ban, chức vụ..." oninput="debounce(loadEmployees, 300)()">
+            </div>
+
+            <div class="filter-controls">
+              <select id="filterDepartment" onchange="loadEmployees()">
+                <option value="All">Tất cả Phòng ban</option>
+                <option value="Sales">Sales</option>
+                <option value="Research & Development">Research & Development</option>
+                <option value="Human Resources">Human Resources</option>
+              </select>
+
+              <select id="filterOvertime" onchange="loadEmployees()">
+                <option value="All">Làm thêm giờ (Tất cả)</option>
+                <option value="Yes">Có OT (Yes)</option>
+                <option value="No">Không OT (No)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Employee Table -->
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Nhân viên</th>
+                  <th>Mã số</th>
+                  <th>Phòng ban</th>
+                  <th>Chức vụ</th>
+                  <th>Tuổi</th>
+                  <th>Lương tháng</th>
+                  <th>Thâm niên</th>
+                  <th>Làm thêm</th>
+                  <th>Hài lòng</th>
+                  <th>WLB</th>
+                  <th class="text-right">Thao tác</th>
+                </tr>
+              </thead>
+              <tbody id="employeeRows">
+                <tr><td colspan="11" class="text-center py-6">Đang tải danh sách nhân viên...</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="table-footer">
+            <div id="employeeCountText">Đang tải...</div>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- TAB 3: AI PREDICTION -->
+      <section id="prediction" class="tab-pane">
+        
+        <div class="prediction-grid">
+          
+          <!-- Input Form Column -->
+          <div class="panel">
+            <div class="panel-header">
+              <div>
+                <h2>Phân tích & Dự đoán Nguy cơ Nghỉ việc</h2>
+                <p>Sử dụng thuật toán học máy Random Forest Pipeline để ước tính tỷ lệ rời đi</p>
+              </div>
+            </div>
+
+            <!-- Quick Profile Presets -->
+            <div class="presets-section">
+              <label class="presets-title">⚡ Chọn nhanh trường hợp mô phỏng:</label>
+              <div class="preset-buttons">
+                <button type="button" class="preset-btn danger" onclick="applyPreset('high_risk')">
+                  🔴 Nguy cơ rất cao (OT, Lương thấp, Hài lòng 1)
+                </button>
+                <button type="button" class="preset-btn success" onclick="applyPreset('low_risk')">
+                  🟢 Nguy cơ thấp (Lương cao, Thâm niên, Hài lòng 4)
+                </button>
+                <button type="button" class="preset-btn warning" onclick="applyPreset('medium_risk')">
+                  🟡 Trung bình (Cần quan sát)
+                </button>
+              </div>
+            </div>
+
+            <!-- Quick Employee Selector -->
+            <div class="employee-selector-box">
+              <label for="selectEmpToPredict">Hoặc chọn nhanh từ nhân viên hiện có:</label>
+              <select id="selectEmpToPredict" onchange="onSelectEmployeeToPredict(this.value)">
+                <option value="">-- Chọn nhân viên để tự động điền form --</option>
+              </select>
+            </div>
+
+            <!-- Prediction Form -->
+            <form id="predictionForm" class="modern-form">
+              <input type="hidden" id="predEmployeeId" name="employee_id" value="">
+              
+              <div class="form-section-title">1. Thông tin Nhân sự & Thâm niên</div>
+              <div class="form-row-2">
+                <div class="form-group">
+                  <label>Tuổi nhân viên <span class="req">*</span></label>
+                  <input type="number" name="age" id="predAge" min="18" max="100" value="30" required>
+                </div>
+                <div class="form-group">
+                  <label>Số năm tại công ty <span class="req">*</span></label>
+                  <input type="number" name="years_at_company" id="predYears" step="0.1" min="0" max="50" value="3.0" required>
+                </div>
+              </div>
+
+              <div class="form-row-2">
+                <div class="form-group">
+                  <label>Phòng ban <span class="req">*</span></label>
+                  <select name="department" id="predDept" required>
+                    <option value="Sales">Sales</option>
+                    <option value="Research & Development">Research & Development</option>
+                    <option value="Human Resources">Human Resources</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Chức vụ / Vị trí <span class="req">*</span></label>
+                  <select name="job_role" id="predRole" required>
+                    <option value="Sales Executive">Sales Executive</option>
+                    <option value="Research Scientist">Research Scientist</option>
+                    <option value="Laboratory Technician">Laboratory Technician</option>
+                    <option value="Software Engineer">Software Engineer</option>
+                    <option value="Manufacturing Director">Manufacturing Director</option>
+                    <option value="Healthcare Representative">Healthcare Representative</option>
+                    <option value="Manager">Manager</option>
+                    <option value="Sales Representative">Sales Representative</option>
+                    <option value="HR Specialist">HR Specialist</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-section-title">2. Đãi ngộ & Môi trường Làm việc</div>
+              <div class="form-row-2">
+                <div class="form-group">
+                  <label>Lương tháng ($ USD) <span class="req">*</span></label>
+                  <input type="number" name="monthly_income" id="predIncome" min="0" step="100" value="5000" required>
+                </div>
+                <div class="form-group">
+                  <label>Làm thêm giờ (Overtime) <span class="req">*</span></label>
+                  <select name="overtime" id="predOvertime" required>
+                    <option value="No">Không (No)</option>
+                    <option value="Yes">Có làm thêm giờ (Yes)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-section-title">3. Khảo sát Tâm lý & Mức độ Gắn kết</div>
+              <div class="form-row-2">
+                <div class="form-group">
+                  <label>Mức độ hài lòng công việc (1-4) <span class="req">*</span></label>
+                  <select name="job_satisfaction" id="predSatisfaction" required>
+                    <option value="1">1 – Rất thất vọng (Very Low)</option>
+                    <option value="2">2 – Chưa hài lòng (Low)</option>
+                    <option value="3" selected>3 – Tốt / Hài lòng (Medium)</option>
+                    <option value="4">4 – Rất hài lòng & Hứng khởi (High)</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Cân bằng công việc & cuộc sống (WLB 1-4) <span class="req">*</span></label>
+                  <select name="work_life_balance" id="predWlb" required>
+                    <option value="1">1 – Mất cân bằng trầm trọng</option>
+                    <option value="2">2 – Khá căng thẳng</option>
+                    <option value="3" selected>3 – Cân bằng ổn định</option>
+                    <option value="4">4 – Rất cân bằng & Thoải mái</option>
+                  </select>
+                </div>
+              </div>
+
+              <button type="submit" id="btnRunPrediction" class="btn btn-primary btn-block btn-lg mt-4">
+                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+                <span>✦ Phân tích & Dự đoán bằng AI</span>
+              </button>
+
+            </form>
+          </div>
+
+          <!-- Prediction Result Column -->
+          <div class="panel result-panel">
+            <div class="panel-header">
+              <div>
+                <h2>Kết quả Phân tích Rủi ro</h2>
+                <p>Chi tiết đánh giá của mô hình Machine Learning</p>
+              </div>
+            </div>
+
+            <!-- Empty State when no prediction yet -->
+            <div id="predictionEmptyState" class="result-empty-state">
+              <div class="empty-icon-circle">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" />
+                </svg>
+              </div>
+              <h3>Chưa có dữ liệu dự đoán</h3>
+              <p>Điền thông tin ở bảng bên trái hoặc nhấn một trong các trường hợp mô phỏng nhanh để bắt đầu phân tích.</p>
+            </div>
+
+            <!-- Loading State -->
+            <div id="predictionLoadingState" class="result-loading-state" hidden>
+              <div class="spinner"></div>
+              <h4>AI Engine đang phân tích đặc trưng...</h4>
+              <p>Đang tính toán xác suất rời đi và trích xuất nguyên nhân chính...</p>
+            </div>
+
+            <!-- Detailed Result Display -->
+            <div id="predictionResultDisplay" class="result-content" hidden>
+              
+              <!-- Risk Header Banner -->
+              <div class="risk-score-card" id="riskScoreCard">
+                <div class="gauge-ring-wrapper">
+                  <div class="risk-percentage-circle" id="riskPercentageCircle">
+                    <span class="pct-num" id="resultProbabilityVal">--%</span>
+                    <span class="pct-label">Xác suất rời đi</span>
+                  </div>
+                </div>
+
+                <div class="risk-badge-box">
+                  <div class="risk-tier-pill" id="resultTierPill">NGUY CƠ CAO</div>
+                  <div class="risk-model-tag" id="resultModelName">Pipeline (attrition_model.joblib)</div>
+                </div>
+              </div>
+
+              <!-- Risk Drivers Analysis -->
+              <div class="factors-section">
+                <h4>🔍 Các yếu tố tác động chính (Key Drivers)</h4>
+                <div class="factors-list" id="resultFactorsList">
+                  <!-- Injected via JS -->
+                </div>
+              </div>
+
+              <!-- Actionable Retention Recommendations -->
+              <div class="recommendations-section">
+                <h4>💡 Khuyến nghị chiến lược giữ chân nhân tài</h4>
+                <ul class="recommendations-list" id="resultRecommendationsList">
+                  <!-- Injected via JS -->
+                </ul>
+              </div>
+
+              <!-- Disclaimer Notice -->
+              <div class="disclaimer-box" id="resultNoticeText">
+                Dự báo thống kê hỗ trợ quyết định quản trị nhân sự, không thay thế đánh giá toàn diện của con người.
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- TAB 4: PREDICTION HISTORY -->
+      <section id="history" class="tab-pane">
+        
+        <div class="panel">
+          <div class="panel-header">
+            <div>
+              <h2>Lịch sử các lần Dự đoán</h2>
+              <p>Nhật ký theo dõi các lượt phân tích rủi ro nhân sự qua AI Engine</p>
+            </div>
+            <div class="panel-actions">
+              <button class="btn btn-secondary" onclick="exportHistoryCSV()">
+                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+                <span>Xuất file CSV</span>
+              </button>
+              <button class="btn btn-danger-outline" onclick="clearAllHistory()">
+                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                </svg>
+                <span>Xóa lịch sử</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th># Mã lượt</th>
+                  <th>Thời gian phân tích</th>
+                  <th>Xác suất nghỉ việc</th>
+                  <th>Phân loại rủi ro</th>
+                  <th>Thuật toán AI</th>
+                  <th class="text-right">Thao tác</th>
+                </tr>
+              </thead>
+              <tbody id="historyRows">
+                <tr><td colspan="6" class="text-center py-6">Đang tải lịch sử dự đoán...</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- TAB 5: SYSTEM & AI INFO -->
+      <section id="system" class="tab-pane">
+        
+        <div class="system-grid">
+          
+          <div class="panel">
+            <div class="panel-header">
+              <div>
+                <h2>Trạng thái Cơ sở Dữ liệu & Ứng dụng</h2>
+                <p>Thông tin kiến trúc kết nối và dữ liệu hiện tại</p>
+              </div>
+            </div>
+
+            <div class="system-status-list">
+              <div class="status-item">
+                <span class="status-key">Trạng thái hệ thống:</span>
+                <span class="status-val success">● Hoạt động bình thường (Healthy)</span>
+              </div>
+              <div class="status-item">
+                <span class="status-key">Cơ sở dữ liệu đang dùng:</span>
+                <span class="status-val bold" id="sysDbType">SQLite (Tự động kết nối)</span>
+              </div>
+              <div class="status-item">
+                <span class="status-key">Hỗ trợ MySQL (XAMPP):</span>
+                <span class="status-val">Có (Tự động chuyển đổi nếu MySQL khả dụng)</span>
+              </div>
+              <div class="status-item">
+                <span class="status-key">Tổng số nhân viên trong CSDL:</span>
+                <span class="status-val bold" id="sysEmpCount">—</span>
+              </div>
+              <div class="status-item">
+                <span class="status-key">Lịch sử dự đoán đã ghi nhận:</span>
+                <span class="status-val bold" id="sysPredCount">—</span>
+              </div>
+              <div class="status-item">
+                <span class="status-key">Tài liệu API Swagger:</span>
+                <span class="status-val"><a href="/docs" target="_blank" class="link-primary">Xem tài liệu tại /docs ↗</a></span>
+              </div>
+            </div>
+
+            <div class="mt-4">
+              <button class="btn btn-secondary" onclick="seedDemoData()">
+                🎲 Nạp thêm dữ liệu mẫu (Seed Demo)
+              </button>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-header">
+              <div>
+                <h2>Trí tuệ Nhân tạo & Thuật toán Dự báo</h2>
+                <p>Cơ chế hoạt động của mô hình Machine Learning</p>
+              </div>
+            </div>
+
+            <div class="system-status-list">
+              <div class="status-item">
+                <span class="status-key">File mô hình:</span>
+                <span class="status-val bold text-indigo" id="sysModelFile">machine_learning/attrition_model.joblib</span>
+              </div>
+              <div class="status-item">
+                <span class="status-key">Trạng thái tệp mô hình:</span>
+                <span class="status-val success" id="sysModelStatus">● Đã nạp thành công</span>
+              </div>
+              <div class="status-item">
+                <span class="status-key">Thuật toán nền tảng:</span>
+                <span class="status-val">Random Forest Classifier Pipeline</span>
+              </div>
+              <div class="status-item">
+                <span class="status-key">Tiền xử lý dữ liệu:</span>
+                <span class="status-val">StandardScaler (số) + OneHotEncoder (phân loại)</span>
+              </div>
+              <div class="status-item">
+                <span class="status-key">Bộ đặc trưng đầu vào:</span>
+                <div class="feature-tags-box">
+                  <span class="ftag">age</span>
+                  <span class="ftag">monthly_income</span>
+                  <span class="ftag">years_at_company</span>
+                  <span class="ftag">overtime</span>
+                  <span class="ftag">job_satisfaction</span>
+                  <span class="ftag">work_life_balance</span>
+                  <span class="ftag">department</span>
+                  <span class="ftag">job_role</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- App Footer -->
+      <footer class="app-footer">
+        <p>TalentPulse AI – Nền tảng Phân tích Nhân sự & Dự báo Nguy cơ Rời đi v2.0 · Phát triển bởi AI Team</p>
+      </footer>
+
+    </main>
+
+  </div>
+
+  <!-- ADD / EDIT EMPLOYEE MODAL -->
+  <div class="modal-backdrop" id="employeeModal" hidden>
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="modalEmployeeTitle">Thêm nhân viên mới</h3>
+        <button class="modal-close-btn" onclick="closeEmployeeModal()">&times;</button>
+      </div>
+
+      <form id="modalEmployeeForm" class="modern-form">
+        <input type="hidden" id="modalEmployeeId" value="">
+
+        <div class="form-row-2">
+          <div class="form-group">
+            <label>Mã nhân viên <span class="req">*</span></label>
+            <input type="text" id="modalEmpCode" required placeholder="NV-013">
+          </div>
+          <div class="form-group">
+            <label>Họ và tên <span class="req">*</span></label>
+            <input type="text" id="modalFullName" required placeholder="Nguyễn Văn A">
+          </div>
+        </div>
+
+        <div class="form-row-3">
+          <div class="form-group">
+            <label>Tuổi</label>
+            <input type="number" id="modalAge" min="18" max="100" placeholder="28">
+          </div>
+          <div class="form-group">
+            <label>Phòng ban</label>
+            <select id="modalDepartment">
+              <option value="Sales">Sales</option>
+              <option value="Research & Development">Research & Development</option>
+              <option value="Human Resources">Human Resources</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Chức vụ</label>
+            <select id="modalJobRole">
+              <option value="Sales Executive">Sales Executive</option>
+              <option value="Research Scientist">Research Scientist</option>
+              <option value="Laboratory Technician">Laboratory Technician</option>
+              <option value="Software Engineer">Software Engineer</option>
+              <option value="Manufacturing Director">Manufacturing Director</option>
+              <option value="Healthcare Representative">Healthcare Representative</option>
+              <option value="Manager">Manager</option>
+              <option value="Sales Representative">Sales Representative</option>
+              <option value="HR Specialist">HR Specialist</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row-3">
+          <div class="form-group">
+            <label>Lương tháng ($)</label>
+            <input type="number" id="modalIncome" min="0" step="100" placeholder="4500">
+          </div>
+          <div class="form-group">
+            <label>Số năm tại cty</label>
+            <input type="number" id="modalYears" step="0.1" min="0" placeholder="2.5">
+          </div>
+          <div class="form-group">
+            <label>Làm thêm giờ</label>
+            <select id="modalOvertime">
+              <option value="No">Không (No)</option>
+              <option value="Yes">Có (Yes)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-group">
+            <label>Hài lòng công việc (1-4)</label>
+            <select id="modalJobSatisfaction">
+              <option value="1">1 - Rất thấp</option>
+              <option value="2">2 - Thấp</option>
+              <option value="3" selected>3 - Trung bình</option>
+              <option value="4">4 - Cao</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Cân bằng WLB (1-4)</label>
+            <select id="modalWlb">
+              <option value="1">1 - Kém</option>
+              <option value="2">2 - Trung bình yếu</option>
+              <option value="3" selected>3 - Tốt</option>
+              <option value="4">4 - Rất tốt</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeEmployeeModal()">Hủy</button>
+          <button type="submit" class="btn btn-primary" id="btnSaveEmployee">Lưu hồ sơ</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Application Script -->
+  <script src="/static/js/app.js"></script>
+</body>
+</html>

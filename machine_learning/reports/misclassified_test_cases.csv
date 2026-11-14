@@ -1,0 +1,81 @@
+age,monthly_income,years_at_company,overtime,job_satisfaction,work_life_balance,department,job_role,actual_attrition,predicted_attrition,predicted_attrition_probability
+24,2033,1,No,2,3,Sales,Sales Representative,No,Yes,0.8384353741496592
+36,3388,1,Yes,3,2,Research & Development,Research Scientist,Yes,No,0.46378174976481656
+54,10686,9,No,3,3,Sales,Sales Executive,No,Yes,0.5828407363621009
+27,2478,4,Yes,2,2,Research & Development,Research Scientist,No,Yes,0.7218155197657394
+30,6877,0,Yes,4,2,Research & Development,Manufacturing Director,No,Yes,0.8897769756349103
+31,6179,10,Yes,3,2,Research & Development,Manufacturing Director,Yes,No,0.25345182138660327
+51,10650,4,No,4,3,Research & Development,Manufacturing Director,Yes,No,0.13056912483079222
+41,19545,22,No,3,3,Research & Development,Research Director,Yes,No,0.13056912483079222
+49,13120,9,No,2,3,Sales,Sales Executive,No,Yes,0.5828407363621009
+34,9713,5,Yes,4,3,Sales,Sales Executive,No,Yes,0.688038748871192
+23,3295,3,No,2,1,Research & Development,Laboratory Technician,No,Yes,0.7218155197657394
+35,2506,2,No,3,3,Research & Development,Research Scientist,No,Yes,0.5265218939124243
+37,4680,1,No,4,3,Research & Development,Research Scientist,No,Yes,0.5265218939124243
+59,5171,6,No,4,3,Sales,Sales Executive,No,Yes,0.5828407363621009
+32,2827,1,No,1,3,Sales,Sales Representative,No,Yes,0.8384353741496592
+34,4505,1,No,2,3,Research & Development,Research Scientist,No,Yes,0.5265218939124243
+58,10312,40,No,4,2,Research & Development,Healthcare Representative,Yes,No,0.13056912483079222
+44,10482,20,No,1,3,Human Resources,Human Resources,Yes,No,0.13056912483079222
+46,10453,24,No,1,3,Sales,Sales Executive,No,Yes,0.5828407363621009
+31,2789,2,No,2,2,Sales,Sales Representative,No,Yes,0.8384353741496592
+25,4400,3,No,1,3,Sales,Sales Representative,Yes,No,0.31604122491247005
+24,3760,6,Yes,4,3,Research & Development,Research Scientist,No,Yes,0.9326081816032158
+29,2058,6,No,3,2,Research & Development,Research Scientist,Yes,No,0.13056912483079222
+25,4907,5,Yes,3,2,Sales,Sales Executive,No,Yes,0.688038748871192
+37,2782,5,Yes,1,2,Research & Development,Research Scientist,No,Yes,0.8384353741496599
+44,2362,3,No,1,4,Research & Development,Laboratory Technician,Yes,No,0.36316758747697897
+34,5484,2,No,4,2,Research & Development,Research Scientist,No,Yes,0.5265218939124243
+28,3201,5,No,2,1,Research & Development,Research Scientist,No,Yes,0.7218155197657394
+30,3833,2,No,3,3,Research & Development,Laboratory Technician,No,Yes,0.8384353741496592
+28,3867,2,Yes,4,3,Research & Development,Laboratory Technician,No,Yes,0.8897769756349103
+31,9852,10,Yes,3,2,Sales,Sales Executive,No,Yes,0.688038748871192
+31,1129,1,Yes,4,3,Research & Development,Laboratory Technician,No,Yes,0.9790379523389231
+58,19701,9,Yes,1,3,Research & Development,Research Director,No,Yes,0.6898320895522388
+31,6410,2,No,1,3,Human Resources,Human Resources,No,Yes,0.8384353741496592
+41,2107,1,No,1,1,Research & Development,Research Scientist,Yes,No,0.42573402417962003
+32,9610,4,No,3,1,Sales,Sales Executive,No,Yes,0.962890625
+56,4963,5,Yes,2,3,Research & Development,Research Scientist,Yes,No,0.25345182138660327
+29,4787,2,Yes,4,4,Research & Development,Research Scientist,Yes,No,0.46378174976481656
+36,5507,4,No,2,1,Sales,Sales Executive,No,Yes,0.962890625
+34,2960,4,No,1,3,Research & Development,Research Scientist,Yes,No,0.13056912483079222
+42,2759,2,Yes,3,3,Research & Development,Research Scientist,Yes,No,0.3934557063048683
+51,2461,10,Yes,3,4,Research & Development,Research Scientist,Yes,No,0.36572700296735905
+31,13675,2,No,3,3,Research & Development,Research Director,No,Yes,0.8384353741496592
+38,6861,1,Yes,4,3,Sales,Sales Executive,No,Yes,0.8897769756349103
+26,3102,6,No,1,3,Research & Development,Research Scientist,Yes,No,0.13056912483079222
+30,2422,3,No,2,3,Research & Development,Laboratory Technician,Yes,No,0.36316758747697897
+24,2725,6,Yes,4,3,Research & Development,Research Scientist,No,Yes,0.9326081816032158
+31,3929,4,Yes,4,3,Research & Development,Research Scientist,No,Yes,0.9326081816032158
+52,3482,9,No,4,2,Sales,Sales Representative,No,Yes,0.5828407363621009
+46,16606,13,No,2,4,Sales,Manager,No,Yes,0.5828407363621009
+35,4581,11,Yes,4,4,Sales,Sales Executive,Yes,No,0.0
+33,2911,2,No,4,2,Research & Development,Research Scientist,No,Yes,0.5265218939124243
+48,2655,9,Yes,3,3,Sales,Sales Representative,Yes,No,0.36572700296735905
+37,6694,1,Yes,4,3,Sales,Sales Executive,No,Yes,0.8897769756349103
+28,1052,1,No,2,3,Sales,Sales Representative,No,Yes,0.8384353741496592
+22,2935,1,Yes,4,2,Research & Development,Laboratory Technician,No,Yes,0.8897769756349103
+50,19237,8,Yes,3,2,Research & Development,Research Director,No,Yes,0.6898320895522388
+43,7847,10,Yes,4,3,Sales,Sales Executive,No,Yes,0.688038748871192
+46,18789,11,No,2,3,Sales,Manager,No,Yes,0.5828407363621009
+33,2909,8,Yes,3,3,Research & Development,Research Scientist,No,Yes,0.9326081816032158
+50,2683,3,Yes,3,3,Sales,Sales Representative,Yes,No,0.36572700296735905
+28,8722,10,No,1,2,Research & Development,Healthcare Representative,Yes,No,0.13056912483079222
+18,1200,0,No,3,3,Sales,Sales Representative,No,Yes,0.8384353741496592
+38,2821,2,No,3,3,Research & Development,Research Scientist,No,Yes,0.5265218939124243
+24,2127,1,No,2,3,Research & Development,Laboratory Technician,No,Yes,0.8384353741496592
+28,2377,2,No,3,3,Research & Development,Research Scientist,No,Yes,0.5265218939124243
+21,2693,1,No,4,2,Research & Development,Research Scientist,Yes,No,0.0
+53,10169,33,No,4,3,Research & Development,Manufacturing Director,Yes,No,0.13056912483079222
+22,2871,0,No,4,3,Research & Development,Laboratory Technician,No,Yes,0.8384353741496592
+58,2479,1,No,3,3,Research & Development,Research Scientist,Yes,No,0.0
+32,3298,6,Yes,2,2,Research & Development,Research Scientist,No,Yes,0.7218155197657394
+37,4777,1,No,2,1,Research & Development,Healthcare Representative,Yes,No,0.49949341438703143
+36,6201,18,Yes,4,2,Sales,Sales Executive,No,Yes,0.688038748871192
+33,2277,4,Yes,2,4,Human Resources,Human Resources,No,Yes,0.9326081816032158
+49,5390,9,No,2,2,Sales,Sales Executive,No,Yes,0.5828407363621009
+29,2109,1,No,1,3,Research & Development,Research Scientist,No,Yes,0.5265218939124243
+22,2853,0,Yes,4,3,Research & Development,Research Scientist,Yes,No,0.46378174976481656
+51,10596,4,No,2,3,Sales,Sales Executive,No,Yes,0.5828407363621009
+27,2341,1,No,1,3,Research & Development,Laboratory Technician,No,Yes,0.8384353741496592
+31,2791,2,No,4,3,Sales,Sales Representative,No,Yes,0.8384353741496592

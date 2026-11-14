@@ -1,0 +1,419 @@
+{
+  "dataset": "WA_Fn-UseC_-HR-Employee-Attrition.csv",
+  "target_definition": {
+    "No": 0,
+    "Yes": 1
+  },
+  "random_state": 42,
+  "split": {
+    "strategy": "stratified train/test split",
+    "test_size": 0.2,
+    "training_rows": 1176,
+    "test_rows": 294,
+    "training_attrition_counts": {
+      "No": 986,
+      "Yes": 190
+    },
+    "test_attrition_counts": {
+      "No": 247,
+      "Yes": 47
+    }
+  },
+  "preprocessing_pipelines": {
+    "A": {
+      "description": "Numeric median imputation + StandardScaler; categorical most-frequent imputation + One-Hot Encoding.",
+      "purpose": "Baseline pipeline. Scaling centers numeric variables and OHE retains each category."
+    },
+    "B": {
+      "description": "Same leakage-safe imputers + RobustScaler; One-Hot Encoding groups categories with fewer than 10 training samples.",
+      "purpose": "Improved preprocessing hypothesis: robust scaling reduces outlier influence and infrequent-category grouping reduces sparse/noisy categories. Validate the benefit using the same stratified folds."
+    }
+  },
+  "pipeline_b_infrequent_categories_training": {
+    "overtime": [],
+    "department": [],
+    "job_role": []
+  },
+  "cross_validation": {
+    "strategy": "5-fold StratifiedKFold on training data",
+    "selection_metric": "f1 for the attrition (Yes) class",
+    "comparison": {
+      "Pipeline A / KNeighborsClassifier": {
+        "preprocessing_pipeline": "A",
+        "algorithm": "KNeighborsClassifier",
+        "best_parameters": {
+          "classifier__n_neighbors": 5,
+          "classifier__weights": "distance"
+        },
+        "cross_validation_mean": {
+          "accuracy": 0.8418175261449694,
+          "precision": 0.5419995690583926,
+          "recall": 0.29473684210526313,
+          "f1": 0.3752041428163063,
+          "roc_auc": 0.7258943968134457
+        },
+        "test_metrics": {
+          "accuracy": 0.8435374149659864,
+          "precision": 0.5263157894736842,
+          "recall": 0.2127659574468085,
+          "f1": 0.30303030303030304,
+          "roc_auc": 0.7003187182358516
+        },
+        "confusion_matrix": [
+          [
+            238,
+            9
+          ],
+          [
+            37,
+            10
+          ]
+        ]
+      },
+      "Pipeline A / GaussianNB": {
+        "preprocessing_pipeline": "A",
+        "algorithm": "GaussianNB",
+        "best_parameters": {
+          "classifier__var_smoothing": 1e-09
+        },
+        "cross_validation_mean": {
+          "accuracy": 0.6155643707176343,
+          "precision": 0.2730612084830403,
+          "recall": 0.7578947368421053,
+          "f1": 0.3970998242373062,
+          "roc_auc": 0.7564448924187102
+        },
+        "test_metrics": {
+          "accuracy": 0.6462585034013606,
+          "precision": 0.2682926829268293,
+          "recall": 0.7021276595744681,
+          "f1": 0.38823529411764707,
+          "roc_auc": 0.7161684899646826
+        },
+        "confusion_matrix": [
+          [
+            157,
+            90
+          ],
+          [
+            14,
+            33
+          ]
+        ]
+      },
+      "Pipeline A / DecisionTreeClassifier": {
+        "preprocessing_pipeline": "A",
+        "algorithm": "DecisionTreeClassifier",
+        "best_parameters": {
+          "classifier__class_weight": "balanced",
+          "classifier__max_depth": 5,
+          "classifier__min_samples_leaf": 5
+        },
+        "cross_validation_mean": {
+          "accuracy": 0.7491777857915615,
+          "precision": 0.33019213181185014,
+          "recall": 0.5263157894736843,
+          "f1": 0.40402116535380184,
+          "roc_auc": 0.6789195724274538
+        },
+        "test_metrics": {
+          "accuracy": 0.7278911564625851,
+          "precision": 0.28,
+          "recall": 0.44680851063829785,
+          "f1": 0.3442622950819672,
+          "roc_auc": 0.6616848996468259
+        },
+        "confusion_matrix": [
+          [
+            193,
+            54
+          ],
+          [
+            26,
+            21
+          ]
+        ]
+      },
+      "Pipeline B / KNeighborsClassifier": {
+        "preprocessing_pipeline": "B",
+        "algorithm": "KNeighborsClassifier",
+        "best_parameters": {
+          "classifier__n_neighbors": 5,
+          "classifier__weights": "distance"
+        },
+        "cross_validation_mean": {
+          "accuracy": 0.8486224305805987,
+          "precision": 0.5775333362289884,
+          "recall": 0.31052631578947365,
+          "f1": 0.39798804726680237,
+          "roc_auc": 0.7353511065773957
+        },
+        "test_metrics": {
+          "accuracy": 0.8435374149659864,
+          "precision": 0.5263157894736842,
+          "recall": 0.2127659574468085,
+          "f1": 0.30303030303030304,
+          "roc_auc": 0.6879145490567663
+        },
+        "confusion_matrix": [
+          [
+            238,
+            9
+          ],
+          [
+            37,
+            10
+          ]
+        ]
+      },
+      "Pipeline B / GaussianNB": {
+        "preprocessing_pipeline": "B",
+        "algorithm": "GaussianNB",
+        "best_parameters": {
+          "classifier__var_smoothing": 1e-09
+        },
+        "cross_validation_mean": {
+          "accuracy": 0.6155643707176343,
+          "precision": 0.2730612084830403,
+          "recall": 0.7578947368421053,
+          "f1": 0.3970998242373062,
+          "roc_auc": 0.7564448924187102
+        },
+        "test_metrics": {
+          "accuracy": 0.6462585034013606,
+          "precision": 0.2682926829268293,
+          "recall": 0.7021276595744681,
+          "f1": 0.38823529411764707,
+          "roc_auc": 0.7161684899646826
+        },
+        "confusion_matrix": [
+          [
+            157,
+            90
+          ],
+          [
+            14,
+            33
+          ]
+        ]
+      },
+      "Pipeline B / DecisionTreeClassifier": {
+        "preprocessing_pipeline": "B",
+        "algorithm": "DecisionTreeClassifier",
+        "best_parameters": {
+          "classifier__class_weight": "balanced",
+          "classifier__max_depth": 5,
+          "classifier__min_samples_leaf": 5
+        },
+        "cross_validation_mean": {
+          "accuracy": 0.7491777857915615,
+          "precision": 0.33019213181185014,
+          "recall": 0.5263157894736843,
+          "f1": 0.40402116535380184,
+          "roc_auc": 0.6789195724274538
+        },
+        "test_metrics": {
+          "accuracy": 0.7278911564625851,
+          "precision": 0.28,
+          "recall": 0.44680851063829785,
+          "f1": 0.3442622950819672,
+          "roc_auc": 0.6616848996468259
+        },
+        "confusion_matrix": [
+          [
+            193,
+            54
+          ],
+          [
+            26,
+            21
+          ]
+        ]
+      }
+    }
+  },
+  "selected_comparison": "Pipeline A / DecisionTreeClassifier",
+  "selected_model": "DecisionTreeClassifier",
+  "selected_preprocessing_pipeline": "A",
+  "selected_parameters": {
+    "classifier__class_weight": "balanced",
+    "classifier__max_depth": 5,
+    "classifier__min_samples_leaf": 5
+  },
+  "test_metrics": {
+    "accuracy": 0.7278911564625851,
+    "precision": 0.28,
+    "recall": 0.44680851063829785,
+    "f1": 0.3442622950819672,
+    "roc_auc": 0.6616848996468259,
+    "confusion_matrix_labels": [
+      "No",
+      "Yes"
+    ],
+    "confusion_matrix": [
+      [
+        193,
+        54
+      ],
+      [
+        26,
+        21
+      ]
+    ],
+    "classification_report": {
+      "No": {
+        "precision": 0.8812785388127854,
+        "recall": 0.7813765182186235,
+        "f1-score": 0.8283261802575107,
+        "support": 247.0
+      },
+      "Yes": {
+        "precision": 0.28,
+        "recall": 0.44680851063829785,
+        "f1-score": 0.3442622950819672,
+        "support": 47.0
+      },
+      "accuracy": 0.7278911564625851,
+      "macro avg": {
+        "precision": 0.5806392694063927,
+        "recall": 0.6140925144284607,
+        "f1-score": 0.586294237669739,
+        "support": 294.0
+      },
+      "weighted avg": {
+        "precision": 0.7851557792066598,
+        "recall": 0.7278911564625851,
+        "f1-score": 0.7509418176614204,
+        "support": 294.0
+      }
+    }
+  },
+  "majority_class_baseline_test_metrics": {
+    "accuracy": 0.8401360544217688,
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "roc_auc": 0.5,
+    "confusion_matrix_labels": [
+      "No",
+      "Yes"
+    ],
+    "confusion_matrix": [
+      [
+        247,
+        0
+      ],
+      [
+        47,
+        0
+      ]
+    ],
+    "classification_report": {
+      "No": {
+        "precision": 0.8401360544217688,
+        "recall": 1.0,
+        "f1-score": 0.9131238447319778,
+        "support": 247.0
+      },
+      "Yes": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 47.0
+      },
+      "accuracy": 0.8401360544217688,
+      "macro avg": {
+        "precision": 0.4200680272108844,
+        "recall": 0.5,
+        "f1-score": 0.4565619223659889,
+        "support": 294.0
+      },
+      "weighted avg": {
+        "precision": 0.7058285899393771,
+        "recall": 0.8401360544217688,
+        "f1-score": 0.7671482641115596,
+        "support": 294.0
+      }
+    }
+  },
+  "error_analysis": {
+    "misclassified_count": 80,
+    "false_negatives_attrition_missed": 26,
+    "false_positives_false_alerts": 54,
+    "examples": [
+      {
+        "error_type": "False negative",
+        "actual": "Yes",
+        "predicted": "No",
+        "predicted_attrition_probability": 0.0,
+        "features": {
+          "age": 35,
+          "monthly_income": 4581,
+          "years_at_company": 11,
+          "overtime": "Yes",
+          "job_satisfaction": 4,
+          "work_life_balance": 4,
+          "department": "Sales",
+          "job_role": "Sales Executive"
+        }
+      },
+      {
+        "error_type": "False negative",
+        "actual": "Yes",
+        "predicted": "No",
+        "predicted_attrition_probability": 0.0,
+        "features": {
+          "age": 21,
+          "monthly_income": 2693,
+          "years_at_company": 1,
+          "overtime": "No",
+          "job_satisfaction": 4,
+          "work_life_balance": 2,
+          "department": "Research & Development",
+          "job_role": "Research Scientist"
+        }
+      },
+      {
+        "error_type": "False positive",
+        "actual": "No",
+        "predicted": "Yes",
+        "predicted_attrition_probability": 0.9790379523389231,
+        "features": {
+          "age": 31,
+          "monthly_income": 1129,
+          "years_at_company": 1,
+          "overtime": "Yes",
+          "job_satisfaction": 4,
+          "work_life_balance": 3,
+          "department": "Research & Development",
+          "job_role": "Laboratory Technician"
+        }
+      },
+      {
+        "error_type": "False positive",
+        "actual": "No",
+        "predicted": "Yes",
+        "predicted_attrition_probability": 0.962890625,
+        "features": {
+          "age": 32,
+          "monthly_income": 9610,
+          "years_at_company": 4,
+          "overtime": "No",
+          "job_satisfaction": 3,
+          "work_life_balance": 1,
+          "department": "Sales",
+          "job_role": "Sales Executive"
+        }
+      }
+    ],
+    "details_file": "misclassified_test_cases.csv"
+  },
+  "limitations": [
+    "The model uses only the eight features currently collected by the application.",
+    "The dataset is imbalanced; precision and recall should be considered alongside accuracy.",
+    "Test metrics describe this dataset and split and do not guarantee performance at another employer.",
+    "Risk bands in the application are operational display thresholds, not clinically or statistically validated decision thresholds.",
+    "A majority-class baseline can have higher accuracy while detecting no attrition cases.",
+    "The feature observation timestamps are not documented; check that model inputs precede the attrition event before interpreting the result as prospective prediction."
+  ]
+}
