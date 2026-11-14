@@ -1,7 +1,14 @@
-<<<<<<< HEAD
 # TalentPulse AI – Nền tảng Phân tích Nhân sự & Dự báo Nguy cơ Nghỉ việc (v2.0)
 
 Hệ thống quản trị và phân tích dữ liệu nhân sự (People Analytics) tích hợp Trí tuệ Nhân tạo (Machine Learning) toàn diện, giao diện Web SaaS hiện đại, chuyên nghiệp, hỗ trợ ra quyết định giữ chân nhân tài và tối ưu hóa môi trường làm việc.
+
+## Bài toán và phạm vi
+
+- **Mục tiêu:** hỗ trợ HR nhận diện sớm các trường hợp có dấu hiệu nghỉ việc để cân nhắc trao đổi và hỗ trợ phù hợp; hệ thống không đưa ra quyết định nhân sự thay con người.
+- **Nhãn huấn luyện:** `Attrition` (`Yes` = nghỉ việc, `No` = không nghỉ việc) trong bộ dữ liệu dùng cho bài tập.
+- **Đầu vào mô hình:** tuổi, thu nhập tháng, thâm niên, làm thêm giờ, mức hài lòng, cân bằng công việc-cuộc sống, phòng ban và chức danh.
+- **Đầu ra:** xác suất dự đoán và nhóm rủi ro hiển thị trên giao diện. Ngưỡng nhóm rủi ro hiện là ngưỡng vận hành, chưa được xác nhận phù hợp cho một tổ chức cụ thể.
+- **Giới hạn:** dữ liệu không ghi rõ thời điểm đo các đặc trưng, vì vậy chưa xác nhận được đây là dự báo trước sự kiện nghỉ việc. Kết quả hiện tại không bảo đảm khái quát sang doanh nghiệp khác.
 
 ---
 
@@ -18,11 +25,11 @@ Hệ thống quản trị và phân tích dữ liệu nhân sự (People Analyti
   - Tổng số lượng nhân sự (+ xu hướng tăng trưởng).
   - Tổng lượt phân tích AI.
   - Số lượng nhân sự thuộc diện nguy cơ cao (Cần can thiệp giữ chân khẩn cấp).
-  - Điểm hài lòng công việc trung bình (Khảo sát eNPS).
+  - Điểm hài lòng công việc trung bình (thang điểm 1–4).
 - **Biểu đồ động (Chart.js):**
   - Biểu đồ cột: Phân bổ nhân sự & Tỷ lệ làm thêm giờ (OT) theo từng phòng ban.
   - Biểu đồ Donut: Cơ cấu phân loại rủi ro (Thấp <35%, Trung bình 35–65%, Cao >65%).
-- **Bảng Cảnh báo sớm (Early Attention Warning):** Tự động phát hiện và cảnh báo các nhân sự có dấu hiệu kiệt sức (OT liên tục kèm chỉ số hài lòng thấp), hỗ trợ nút kích hoạt **⚡ Dự đoán AI tức thì**.
+- **Bảng Cảnh báo sớm (Early Attention Warning):** Hiển thị các hồ sơ có OT và chỉ số hài lòng/cân bằng công việc thấp theo dữ liệu hiện có; hỗ trợ nút kích hoạt **⚡ Dự đoán AI tức thì**. Đây là tín hiệu sàng lọc, không phải chẩn đoán kiệt sức.
 
 ### 3. Quản lý Hồ sơ Nhân viên Toàn diện (Employee Directory)
 - **Tra cứu thời gian thực:** Tìm kiếm theo Mã nhân viên, Họ tên, Phòng ban, Chức danh.
@@ -35,6 +42,7 @@ Hệ thống quản trị và phân tích dữ liệu nhân sự (People Analyti
 
 ### 4. Công cụ Dự đoán Nguy cơ Nghỉ việc AI (AI Attrition Engine)
 - **Mô hình Machine Learning:** Pipeline scikit-learn được huấn luyện từ file CSV HR Attrition do giảng viên cung cấp. Script so sánh K-NN, Gaussian Naive Bayes và Decision Tree trên hai cấu hình tiền xử lý, dùng cross-validation để chọn cấu hình và báo cáo kết quả trên tập test độc lập.
+- **Kết quả tham khảo:** cấu hình được chọn là Decision Tree, có Accuracy 72,8%, Precision 28,0%, Recall 44,7% và F1 34,4% trên tập test. Xem báo cáo trong `machine_learning/reports/`; các chỉ số này không phải cam kết hiệu năng.
 - **Mô phỏng tức thì (Presets):**
   - 🔴 *Nguy cơ rất cao:* Làm OT nhiều, thu nhập thấp, hài lòng 1/4.
   - 🟢 *Gắn bó vững chắc:* Lương cao, thâm niên 8 năm, không OT, hài lòng 4/4.
@@ -42,6 +50,7 @@ Hệ thống quản trị và phân tích dữ liệu nhân sự (People Analyti
 - **Đồng hồ đo phần trăm rủi ro (Risk Gauge Meter):** Trực quan hóa xác suất rời đi.
 - **Trích xuất nguyên nhân chính (Key Risk Drivers):** Phân tích rõ yếu tố gây rủi ro (Áp lực tăng ca, Mức lương so với thâm niên, Mất cân bằng WLB).
 - **Chiến lược giữ chân (Retention Recommendations):** Đề xuất giải pháp nhân sự cụ thể cho HR (Tổ chức Stay Interview 1-1, rà soát chính sách làm thêm, lộ trình thăng tiến).
+- Các yếu tố và khuyến nghị hiện được tạo bằng luật nghiệp vụ từ thông tin đầu vào; chúng không phải giải thích nhân quả hoặc phân tích mức đóng góp đặc trưng của mô hình đã huấn luyện.
 
 ### 5. Lịch sử Kiểm toán & Báo cáo (Audit Log)
 - Lưu trữ toàn bộ các lượt dự đoán kèm thời gian, xác suất, phân loại rủi ro và tên mô hình AI.
@@ -52,6 +61,10 @@ Hệ thống quản trị và phân tích dữ liệu nhân sự (People Analyti
 - **Sẵn sàng cho MySQL (XAMPP):** Nếu muốn dùng MySQL, chỉ cần đổi `DATABASE_URL` trong file `.env`. Nếu MySQL chưa bật, hệ thống tự động fallback về SQLite an toàn mà không bị crash.
 
 ---
+
+## Nguồn dữ liệu
+
+Bộ dữ liệu `WA_Fn-UseC_-HR-Employee-Attrition.csv` được cung cấp trong bối cảnh bài tập. Nguồn gốc chính thức và điều khoản phân phối chưa được xác nhận trong repository; hãy xác minh với giảng viên, bổ sung trích dẫn/giấy phép phù hợp và không phân phối lại dữ liệu nếu chưa được cho phép. Chi tiết xử lý dữ liệu và đặc trưng nằm trong [machine_learning/README.md](machine_learning/README.md).
 
 ## 🚀 Hướng dẫn Khởi chạy Ứng dụng
 
@@ -119,8 +132,8 @@ HR_Attrition_Web/
 │   ├── attrition_model.joblib # Pipeline đã huấn luyện trên dữ liệu thật
 │   ├── train_model.py         # EDA, cross-validation, đánh giá và huấn luyện
 │   └── README.md              # Quy trình và giải thích đặc trưng
-├── .env                       # Cấu hình môi trường (CSDL, Model path)
-├── .env.example               # Mẫu cấu hình tham khảo
+├── .env.example               # Mẫu cấu hình; .env cục bộ không đưa lên repository
+├── .gitignore                 # Loại trừ môi trường ảo, cache và cấu hình cục bộ
 ├── requirements.txt           # Danh mục thư viện Python
 └── README.md                  # Hướng dẫn chi tiết dự án
 ```
@@ -130,6 +143,5 @@ HR_Attrition_Web/
 ## 🔒 Khuyến cáo Bảo mật & Đạo đức AI
 1. Hệ thống phục vụ công tác phân tích, cảnh báo sớm và hỗ trợ đưa ra quyết định quản trị nhân sự.
 2. Quyết định tuyển dụng, đãi ngộ hoặc điều chuyển luôn cần sự kết hợp đánh giá thực tế của phòng Nhân sự và Quản lý trực tiếp, không sử dụng AI làm thước đo duy nhất.
-=======
-# HR_Attrition
->>>>>>> b570989d01118ba4c1c3dca39a0529725e244ea9
+3. Bộ dữ liệu mất cân bằng; cần xem Precision, Recall, F1 và các trường hợp dự đoán sai, không chỉ Accuracy.
+4. Trước khi dùng trong thực tế, cần kiểm tra quyền sử dụng dữ liệu, xác nhận đặc trưng có trước thời điểm nghỉ việc và đánh giá mô hình trên dữ liệu phù hợp với tổ chức triển khai.
