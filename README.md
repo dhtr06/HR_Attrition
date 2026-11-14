@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # TalentPulse AI – Nền tảng Phân tích Nhân sự & Dự báo Nguy cơ Nghỉ việc (v2.0)
 
 Hệ thống quản trị và phân tích dữ liệu nhân sự (People Analytics) tích hợp Trí tuệ Nhân tạo (Machine Learning) toàn diện, giao diện Web SaaS hiện đại, chuyên nghiệp, hỗ trợ ra quyết định giữ chân nhân tài và tối ưu hóa môi trường làm việc.
@@ -129,3 +130,6 @@ HR_Attrition_Web/
 ## 🔒 Khuyến cáo Bảo mật & Đạo đức AI
 1. Hệ thống phục vụ công tác phân tích, cảnh báo sớm và hỗ trợ đưa ra quyết định quản trị nhân sự.
 2. Quyết định tuyển dụng, đãi ngộ hoặc điều chuyển luôn cần sự kết hợp đánh giá thực tế của phòng Nhân sự và Quản lý trực tiếp, không sử dụng AI làm thước đo duy nhất.
+=======
+# HR_Attrition
+>>>>>>> b570989d01118ba4c1c3dca39a0529725e244ea9
